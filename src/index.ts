@@ -8,5 +8,6 @@ import * as utils from './utils';
 import * as fee from './fee';
 import * as action from './action';
 
-
 export { account, dpos, oex, miner, p2p, txpool, utils, fee, action };
+
+export default { account, dpos, oex, miner, p2p, txpool, utils, fee, action };

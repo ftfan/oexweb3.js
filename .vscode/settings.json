@@ -1,0 +1,6 @@
+{
+  "prettier.configPath": "prettier.config.js",
+  "files.exclude": {
+    "build/**/**": true
+  }
+}

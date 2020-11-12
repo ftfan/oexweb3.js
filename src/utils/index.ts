@@ -1,46 +1,53 @@
 import * as abiUtil from 'ethereumjs-abi';
-import * as oex from '../oex'
+import oex from '../oex';
 let provider = 'http://127.0.0.1:8545';
-let wsToNode = null;
+// let wsToNode: null | WebSocket = null;
 let app = null;
 
 export function setApp() {
   app = true;
 }
 
-export async function setProvider(providerInfo) {
+export async function setProvider(providerInfo: string) {
   provider = providerInfo;
   if (!app) {
-    return oex.getChainConfig().then(chainConfig => {
+    return oex.getChainConfig().then((chainConfig) => {
       oex.setChainId(chainConfig.chainId);
     });
   }
 }
 
-export function openWebSocket(wsAddr) {
-  wsToNode = new WebSocket(wsAddr);
-  websocket.onopen = function(evt) { 
-    console.log('ws open success');
-  }; 
-  websocket.onclose = function(evt) { 
-    console.log('ws close success');
-  }; 
-  websocket.onmessage = function(evt) { 
-    console.log('get message:' + evt.data);
-  }; 
-  websocket.onerror = function(evt) { 
-    console.log('get error:' + evt.data);
-  }; 
-}
+// 实现错误
+// export function openWebSocket(wsAddr: string) {
+//   wsToNode = new WebSocket(wsAddr);
+//   wsToNode.onopen = function () {
+//     console.log('ws open success');
+//   };
+//   wsToNode.onclose = function () {
+//     console.log('ws close success');
+//   };
+//   wsToNode.onmessage = function (evt) {
+//     console.log('get message:' + evt.data);
+//   };
+//   wsToNode.onerror = function (evt) {
+//     console.log('get error:' + evt);
+//   };
+// }
 
-// data = []
-export function getRlpData(data) {
-  return encode(data);
-}
+// 实现错误
+// // data = []
+// export function getRlpData(data) {
+//   return encode(data);
+// }
 
-export async function postToNode(dataToNode) {
+export async function postToNode(dataToNode: any) {
   if (app) return dataToNode.data;
-  const resp = await fetch(provider, {headers: { "Content-Type": "application/json" }, method: 'POST', body: dataToNode.data});
+
+  if (!globalThis.fetch) {
+    const fetch = require('node-fetch');
+    globalThis.fetch = fetch;
+  }
+  const resp = await fetch(provider, { headers: { 'Content-Type': 'application/json' }, method: 'POST', body: dataToNode.data });
   if (resp == null) {
     throw 'RPC调用失败：' + dataToNode.data;
   }
@@ -51,7 +58,7 @@ export async function postToNode(dataToNode) {
   return response.result;
 }
 
-export function hex2Bytes(str) {
+export function hex2Bytes(str: string) {
   let pos = 0;
   let len = str.length;
   let hexA = new Uint8Array();
@@ -83,14 +90,14 @@ export function hex2Bytes(str) {
   return hexA;
 }
 /* funcName: function name
-* parameterTypes: all parameter types, eg:  ['uint32', 'bool']
-* parameterValues: all parameter values, eg: [99, 1]
-*  */
-export function getContractPayload(funcName, parameterTypes, parameterValues) {
+ * parameterTypes: all parameter types, eg:  ['uint32', 'bool']
+ * parameterValues: all parameter values, eg: [99, 1]
+ *  */
+export function getContractPayload(funcName: string, parameterTypes: string[], parameterValues: any[]) {
   return abiUtil.methodID(funcName, parameterTypes).toString('hex') + abiUtil.rawEncode(parameterTypes, parameterValues).toString('hex');
 }
 
-export function isValidABI(abiInfo) {
+export function isValidABI(abiInfo: any) {
   try {
     if (!Array.isArray(abiInfo)) {
       return false;
@@ -106,11 +113,11 @@ export function isValidABI(abiInfo) {
   }
 }
 
-export function parseContractTxPayload(abiInfo, payload) {
+export function parseContractTxPayload(abiInfo: any, payload: string) {
   if (!isValidABI(abiInfo)) {
     return null;
   }
-  const retInfo = {};
+  const retInfo: any = {};
   let startIndex = 0;
   if (payload.indexOf('0x') == 0) {
     startIndex = 2;
@@ -127,9 +134,9 @@ export function parseContractTxPayload(abiInfo, payload) {
       if (methodId == encodedFunc) {
         retInfo.funcName = funcName;
         retInfo.parameterInfos = [];
-        const decodedValues = abiUtil.rawDecode(parameterTypes, Buffer.from(payload.substr( 8 + startIndex), 'hex'));
+        const decodedValues = abiUtil.rawDecode(parameterTypes, Buffer.from(payload.substr(8 + startIndex), 'hex'));
         for (let i = 0; i < decodedValues.length; i++) {
-          const parameterInfo = {};
+          const parameterInfo: any = {};
           parameterInfo.name = interfaceInfo.inputs[i].name;
           parameterInfo.type = parameterTypes[i];
           parameterInfo.value = decodedValues[i];
@@ -142,9 +149,8 @@ export function parseContractTxPayload(abiInfo, payload) {
   return null;
 }
 
-export function isEmptyObj(obj) {
+export function isEmptyObj(obj: any) {
   return typeof obj != 'number' && (obj === undefined || obj == '');
 }
 
-export default { isEmptyObj, hex2Bytes, postToNode, getRlpData, setProvider, getContractPayload, 
-                 isValidABI, parseContractTxPayload };
+export default { isEmptyObj, hex2Bytes, postToNode, setProvider, getContractPayload, isValidABI, parseContractTxPayload };

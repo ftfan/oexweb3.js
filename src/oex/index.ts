@@ -16,120 +16,84 @@ export function setChainId(newChainId) {
 }
 
 export async function getCurrentBlock(bFullTx) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getCurrentBlockWithPayer',
-    params: [bFullTx],
-    id: 1 });
-  return utils.postToNode({ data: dataToSrv, });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getCurrentBlockWithPayer', params: [bFullTx], id: 1 });
+  return utils.postToNode({ data: dataToSrv });
 }
 
 export async function getBlockByHash(blockHash, bFullTx) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getBlockByHashWithPayer',
-    params: [blockHash, bFullTx],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getBlockByHashWithPayer', params: [blockHash, bFullTx], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
 export async function getBlockByNum(blockNum, bFullTx) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getBlockByNumberWithPayer',
-    params: [blockNum, bFullTx],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getBlockByNumberWithPayer', params: [blockNum, bFullTx], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
 export async function getTransactionByHash(blockHash) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getTransactionByHashWithPayer',
-    params: [blockHash],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getTransactionByHashWithPayer', params: [blockHash], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
 export async function getTransactionReceipt(txHash) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getTransactionReceiptWithPayer',
-    params: [txHash],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getTransactionReceiptWithPayer', params: [txHash], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
 export async function getSuggestionGasPrice() {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_gasPrice',
-    params: [],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_gasPrice', params: [], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 export async function getTxsByAccount(accountName, blockNum, lookbackNum) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getTxsByAccount',
-    params: [accountName, blockNum, lookbackNum],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getTxsByAccount', params: [accountName, blockNum, lookbackNum], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
 export async function getTxsByBloom(bloom, blockNum, lookbackNum) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getTxsByBloom',
-    params: [bloom, blockNum, lookbackNum],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getTxsByBloom', params: [bloom, blockNum, lookbackNum], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
 export async function getInternalTxsByAccount(accountName, blockNum, lookbackNum) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getInternalTxByAccount',
-    params: [accountName, blockNum, lookbackNum],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getInternalTxByAccount', params: [accountName, blockNum, lookbackNum], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
 export async function getInternalTxsByBloom(bloom, blockNum, lookbackNum) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getInternalTxByBloom',
-    params: [bloom, blockNum, lookbackNum],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getInternalTxByBloom', params: [bloom, blockNum, lookbackNum], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
 export async function getInternalTxByHash(txHash) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getInternalTxByHash',
-    params: [txHash],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getInternalTxByHash', params: [txHash], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
-export async function getChainConfig(bForce) {
+export async function getChainConfig(bForce?: any) {
   if (!bForce && chainConfig != null) {
     return chainConfig;
   }
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_getChainConfig',
-    params: [],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_getChainConfig', params: [], id: 1 });
   chainConfig = await utils.postToNode({
     data: dataToSrv,
   });
@@ -143,10 +107,7 @@ export async function setChainConfig(chainConfigInfo) {
 //{"actionType":0,"from":"testtest31","to":"testtest32",
 // "assetId":1,"gas":200000,"gasPrice":1,"value":0,"data":""}
 export async function call(callInfo, blockNum) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_call',
-    params: [callInfo, blockNum],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_call', params: [callInfo, blockNum], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
@@ -155,10 +116,7 @@ export async function call(callInfo, blockNum) {
 //{"actionType":0,"from":"testtest31","to":"testtest32",
 // "assetId":1,"gas":200000,"gasPrice":1,"value":0,"data":""}
 export async function estimateGas(txInfo, blockNum) {
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_estimateGas',
-    params: [txInfo, blockNum],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_estimateGas', params: [txInfo, blockNum], id: 1 });
   return utils.postToNode({
     data: dataToSrv,
   });
@@ -167,9 +125,9 @@ export async function estimateGas(txInfo, blockNum) {
 function getRSV(signature) {
   const r = signature.slice(0, 66);
   const s = '0x' + signature.slice(66, 130);
-  let v = '0x' + signature.slice(130, 132);
+  let v: any = '0x' + signature.slice(130, 132);
   if (chainId !== 0) {
-    v = (v === '0x1c') ? 1 : 0;
+    v = v === '0x1c' ? 1 : 0;
     v += chainId * 2 + 35;
     v = '0x' + v.toString(16);
   }
@@ -184,7 +142,7 @@ export async function packTx(txInfo) {
     txInfo.gasAssetId = chainConfig.sysTokenID;
   }
   for (let i = 0; i < txInfo.actions.length; i++) {
-    let action = txInfo.actions[i];
+    const action = txInfo.actions[i];
     if (utils.isEmptyObj(action.nonce)) {
       action.nonce = await account.getNonce(action.accountName);
     }
@@ -198,11 +156,11 @@ export async function packTx(txInfo) {
   return txInfo;
 }
 /**
- txInfo = {chainId, gasAssetId, gasPrice, actions:[{actionType, accountName, nonce, gasLimit, toAccountName, assetId, amount, payload, remark}]}
+  txInfo = {chainId, gasAssetId, gasPrice, actions:[{actionType, accountName, nonce, gasLimit, toAccountName, assetId, amount, payload, remark}]}
 */
 export async function signTx(txInfo, privateKey) {
   await packTx(txInfo);
-  
+
   const actionHashs = [];
   for (const action of txInfo.actions) {
     const { accountName, actionType, nonce, gasLimit, toAccountName, assetId, amount, remark } = action;
@@ -243,7 +201,7 @@ txInfo: object of transaction info: {chainId, gasAssetId, gasPrice, actions:[{ac
         if you don't pass chainId, gasAssetId, nonce, payload and remark, it will use default value.
 */
 export async function sendSingleSigTransaction(txInfo, signInfo) {
-  const multiSigInfos = [{ signInfo, indexes: [0]}];
+  const multiSigInfos = [{ signInfo, indexes: [0] }];
   return sendSeniorSigTransaction(txInfo, multiSigInfos, 0);
 }
 
@@ -255,7 +213,7 @@ multiSigInfos: [{signInfo, indexes}], signInfo is generated by signTx function, 
 export async function sendSeniorSigTransaction(txInfo, multiSignInfos, parentIndex) {
   await packTx(txInfo);
 
-  txInfo.actions[0].sign = {parentIndex, signData: []};
+  txInfo.actions[0].sign = { parentIndex, signData: [] };
   //txInfo.actions[0].signData = [];
   for (const signInfo of multiSignInfos) {
     const rsv = getRSV(signInfo.signInfo);
@@ -263,20 +221,53 @@ export async function sendSeniorSigTransaction(txInfo, multiSignInfos, parentInd
   }
   //Object.assign(tx.actions[0], rsv);
   const action = txInfo.actions[0];
-  let rlpData = encode([txInfo.gasAssetId, txInfo.gasPrice, [[action.actionType, action.nonce, action.assetId, action.accountName, action.toAccountName, action.gasLimit, action.amount, action.payload, action.remark, [action.sign.parentIndex, [...action.sign.signData]]]]]);
+  let rlpData: any = encode([
+    txInfo.gasAssetId,
+    txInfo.gasPrice,
+    [
+      [
+        action.actionType,
+        action.nonce,
+        action.assetId,
+        action.accountName,
+        action.toAccountName,
+        action.gasLimit,
+        action.amount,
+        action.payload,
+        action.remark,
+        [action.sign.parentIndex, [...action.sign.signData]],
+      ],
+    ],
+  ]);
   rlpData = '0x' + rlpData.toString('hex');
-  const dataToSrv = JSON.stringify({ jsonrpc: '2.0',
-    method: 'oex_sendRawTransaction',
-    params: [rlpData],
-    id: 1 });
+  const dataToSrv = JSON.stringify({ jsonrpc: '2.0', method: 'oex_sendRawTransaction', params: [rlpData], id: 1 });
 
   return utils.postToNode({
     data: dataToSrv,
   });
 }
 
-export default { getChainId, setChainId, getCurrentBlock, getBlockByHash, getBlockByNum, getTransactionByHash,
-  getTransactionReceipt, getSuggestionGasPrice,
-  getTxsByAccount, getTxsByBloom, getChainConfig, setChainConfig,
-  getInternalTxsByAccount, getInternalTxsByBloom, getInternalTxByHash, packTx,
-  signTx, recoverSignedTx, sendSingleSigTransaction, sendSeniorSigTransaction, call, estimateGas};
+export default {
+  getChainId,
+  setChainId,
+  getCurrentBlock,
+  getBlockByHash,
+  getBlockByNum,
+  getTransactionByHash,
+  getTransactionReceipt,
+  getSuggestionGasPrice,
+  getTxsByAccount,
+  getTxsByBloom,
+  getChainConfig,
+  setChainConfig,
+  getInternalTxsByAccount,
+  getInternalTxsByBloom,
+  getInternalTxByHash,
+  packTx,
+  signTx,
+  recoverSignedTx,
+  sendSingleSigTransaction,
+  sendSeniorSigTransaction,
+  call,
+  estimateGas,
+};
