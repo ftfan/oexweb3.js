@@ -42,16 +42,23 @@ export async function setProvider(providerInfo: string) {
 
 export async function postToNode(dataToNode: any) {
   if (app) return dataToNode.data;
+  let response: any;
 
-  if (!globalThis.fetch) {
-    const fetch = require('node-fetch');
-    globalThis.fetch = fetch;
+  if (globalThis.fetch) {
+    const resp = await fetch(provider, { headers: { 'Content-Type': 'application/json' }, method: 'POST', body: dataToNode.data });
+    if (resp == null) {
+      throw 'RPC调用失败：' + dataToNode.data;
+    }
+    response = await resp.json();
+  } else {
+    const axios = require('axios');
+    const res = await axios.post(provider, dataToNode.data, { headers: { 'Content-Type': 'application/json' } });
+    if (!res || res.data === null) {
+      throw 'RPC调用失败：' + dataToNode.data;
+    }
+    response = await res.data;
   }
-  const resp = await fetch(provider, { headers: { 'Content-Type': 'application/json' }, method: 'POST', body: dataToNode.data });
-  if (resp == null) {
-    throw 'RPC调用失败：' + dataToNode.data;
-  }
-  const response = await resp.json();
+
   if (response.error != null) {
     throw response.error.message;
   }
